@@ -19,6 +19,11 @@
                 <frc-sim-joystick source-provider="HALSim" source-key="joystick/0"></frc-sim-joystick>
                 <!-- <frc-sim-fms></frc-sim-fms>  -->
                 <frc-sim-pwms></frc-sim-pwms>
+                <frc-field width="52.4375" height="26.9375" image="2020-field.png" grid-size="0" unit="ft">
+                    <frc-field-object source-provider="HALSim" source-key="simDevices/field2D" width="0.6096" height="0.9144" unit="m">
+                        <frc-field-robot color="blue"></frc-field-robot>
+                    </frc-field-object>
+                </frc-field>
                 <frc-urdf-viewer 
                     urdf="./f10_racecar/racecar_differential.urdf"
                     source-provider="NetworkTables"
