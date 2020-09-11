@@ -9,37 +9,37 @@
     </script>
     <frc-dashboard address-type="gitpod">
        <frc-sim-gitpod-info></frc-sim-gitpod-info>
-        <div part="container">
-            <div>
-                <frc-robot-log></frc-robot-log>
-                <frc-source-tree source-provider="HALSim"></frc-source-tree>
-            </div>
-            <div>
-                <frc-sim-robot-state></frc-sim-robot-state>
-                <frc-sim-joystick source-provider="HALSim" source-key="joystick/0"></frc-sim-joystick>
-                <!-- <frc-sim-fms></frc-sim-fms>  -->
-                <frc-sim-pwms></frc-sim-pwms>
-                <frc-field width="52.4375" height="26.9375" image="2020-field.png" grid-size="0" unit="ft">
-                    <frc-field-object source-provider="HALSim" source-key="simDevices/field2D" width="0.6096" height="0.9144" unit="m">
-                        <frc-field-robot color="blue"></frc-field-robot>
-                    </frc-field-object>
-                </frc-field>
-                <frc-urdf-viewer 
-                    urdf="./f10_racecar/racecar_differential.urdf"
-                    source-provider="NetworkTables"
-                    source-key="/atlas"
-                    max-distance=".28"
-                    min-distance=".28"
-                    robot-x="-.13" 
-                    robot-y=".1" 
-                    robot-z=".1"
-                    camera-x="-0.069" 
-                    camera-y="0.366" 
-                    camera-z="0.133"
-                ></frc-urdf-viewer>
-            </div>
-        </div>
+        <frc-robot-log></frc-robot-log>
+        <frc-sim-robot-state></frc-sim-robot-state>
+        <frc-sim-joystick source-provider="HALSim" source-key="joystick/0"></frc-sim-joystick>
+        <!-- <frc-sim-fms></frc-sim-fms>  -->
+        <frc-sim-pwms></frc-sim-pwms>
+        <frc-field width="52.4375" height="26.9375" image="2020-field.png" grid-size="0" unit="ft">
+            <frc-field-object source-provider="HALSim" source-key="simDevices/field2D" width="0.6096" height="0.9144" unit="m">
+                <frc-field-robot color="blue"></frc-field-robot>
+            </frc-field-object>
+        </frc-field>
+        <frc-urdf-viewer 
+            urdf="./f10_racecar/racecar_differential.urdf"
+            source-provider="NetworkTables"
+            source-key="/atlas"
+            max-distance=".28"
+            min-distance=".28"
+            robot-x="-.13" 
+            robot-y=".1" 
+            robot-z=".1"
+            camera-x="-0.069" 
+            camera-y="0.366" 
+            camera-z="0.133"
+        ></frc-urdf-viewer>
     </frc-dashboard>
     <script src="./node_modules/@frc-web-components/frc-web-components/build/frc-web-components.min.js"></script>
+
+    <script>
+        const { LitElement, html, css } = window.webbit;
+        const { getSourceProvider } = webbitStore;
+    </script>
+
+    <script src="./robot-log.js"></script>
   </body>
 </html>
