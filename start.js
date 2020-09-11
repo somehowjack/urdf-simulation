@@ -1,10 +1,36 @@
 const { spawn } = require('child_process');
 const fs = require('fs').promises;
 const { LiveStream } = require('./live-stream');
+const { createServer } = require('wss');
 
-// delete simulateJava.log (maybe not)
-// kill -9 [simulation PID]
-// fuser -k 8080/tcp
+class RobotWs {
+
+    constructor() {
+        
+        this.connections = [];
+
+        createServer(connection => {
+            connection.send('welcome!');
+            connection.on('message', (data) => {
+                console.log('received message:', data.toString());
+                // connection.send("received message: " + data.toString()) // echo-server
+            });
+            this.connections.push(connection);
+        })
+        .listen(8082, function ()  {
+            const {address, port} = this.address() // this is the http[s].Server
+            console.log('listening on http://%s:%d (%s)', /::/.test(address) ? '0.0.0.0' : address, port)
+        });
+    }
+
+    sendMessage(message) {
+        this.connections.forEach(connection => {
+            if (connection.readyState === connection.OPEN) {
+                connection.send(message);
+            }
+        });
+    }
+}
 
 async function getSimulationPid() {
     return new Promise(async (resolve, reject) => {
@@ -46,6 +72,9 @@ async function killSimulationPort() {
 }
 
 async function start() {
+
+    const robotWs = new RobotWs();
+
     await killSimulationPid();
     await killSimulationPort();
 
@@ -63,7 +92,7 @@ async function start() {
     childProcess.on('exit', function (code) {
         console.log('child process exited with code ' + code.toString());
         const liveStream = new LiveStream(simulateLog, text => {
-            console.log('text:', text);
+            robotWs.sendMessage(text);
         });
     });
 }
