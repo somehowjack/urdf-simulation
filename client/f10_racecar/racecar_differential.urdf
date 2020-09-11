@@ -46,7 +46,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="meshes/left_rear_wheel.obj"/>
+        <mesh filename="meshes/left_rear_wheel.dae"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -79,7 +79,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="meshes/right_rear_wheel.obj"/>
+        <mesh filename="meshes/right_rear_wheel.dae"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -176,7 +176,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="meshes/left_front_wheel.obj"/>
+        <mesh filename="meshes/left_front_wheel.dae"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -220,7 +220,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="meshes/right_front_wheel.obj"/>
+        <mesh filename="meshes/right_front_wheel.dae"/>
       </geometry>
       <material name="white"/>
     </visual>
