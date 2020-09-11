@@ -9,9 +9,9 @@ const { LiveStream } = require('./live-stream');
 async function getSimulationPid() {
     return new Promise(async (resolve, reject) => {
         try { 
-            resolve(await fs.readFile('/workspace/testFRCOnlineIDE/TestProject/build/pids/simulateJava.pid', 'utf8'));
+            resolve(await fs.readFile('/workspace/differential-drive-simulation/build/pids/simulateJava.pid', 'utf8'));
         } catch(e) {
-            reject();
+            reject(e);
         }
     });
 }
@@ -25,6 +25,7 @@ async function killSimulationPid() {
                 resolve();
             }); 
         } catch(e) {
+            console.log('error:', e);
             resolve();
         }
     });
@@ -32,10 +33,15 @@ async function killSimulationPid() {
 
 async function killSimulationPort() { 
     return new Promise(async resolve => {
-        const childProcess = spawn('fuser', ['-k', '8080/tcp']);
-        childProcess.on('exit', function (code) {
+        try {
+            const childProcess = spawn('fuser', ['-k', '8080/tcp']);
+            childProcess.on('exit', function (code) {
+                resolve();
+            }); 
+        } catch(e) {
+            console.log('error:', e.message);
             resolve();
-        }); 
+        }
     });
 }
 
@@ -43,7 +49,7 @@ async function start() {
     await killSimulationPid();
     await killSimulationPort();
 
-    const childProcess = spawn('./gradlew', ['simulateJava'], {cwd: './TestProject'});
+    const childProcess = spawn('./gradlew', ['simulateJava']);
     childProcess.stdout.on('data', function (data) {
         console.log('stdout: ' + data.toString());
     });
@@ -52,7 +58,7 @@ async function start() {
         console.log('stderr: ' + data.toString());
     });
 
-    const simulateLog = '/workspace/testFRCOnlineIDE/TestProject/build/stdout/simulateJava.log';
+    const simulateLog = '/workspace/differential-drive-simulation/build/stdout/simulateJava.log';
 
     childProcess.on('exit', function (code) {
         console.log('child process exited with code ' + code.toString());
