@@ -49,6 +49,13 @@ class RobotLog extends LitElement {
         return css`
             :host {
                 display: block;
+                width: 500px;
+                height: 300px;
+            }
+
+            frc-logger {
+                width: 100%;
+                height: 100%;
             }
         `;
     }
