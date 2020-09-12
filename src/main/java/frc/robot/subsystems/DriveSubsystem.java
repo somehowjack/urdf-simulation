@@ -29,6 +29,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.DifferentialDrivetrainSim;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 public class DriveSubsystem extends SubsystemBase {
   // The motors on the left side of the drive.
   private final SpeedControllerGroup m_leftMotors =
@@ -70,6 +74,9 @@ public class DriveSubsystem extends SubsystemBase {
   private Field2d m_fieldSim;
   private SimDouble m_gyroAngleSim;
 
+
+  private NetworkTable m_table;
+
   /**
    * Creates a new DriveSubsystem.
    */
@@ -100,6 +107,12 @@ public class DriveSubsystem extends SubsystemBase {
 
       // the Field2d class lets us visualize our robot in the simulation GUI.
       m_fieldSim = new Field2d();
+
+      //get the default instance of NetworkTables
+      NetworkTableInstance inst = NetworkTableInstance.getDefault();
+
+      //get a reference to the subtable called "datatable"
+      m_table = inst.getTable("drivebase");
     }
   }
 
@@ -108,6 +121,11 @@ public class DriveSubsystem extends SubsystemBase {
     // Update the odometry in the periodic block
     m_odometry.update(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getDistance(),
           m_rightEncoder.getDistance());
+
+    m_table.getEntry("baseLinkToFlWheelJoint").setNumber(-m_leftEncoder.getDistance() * 100);
+    m_table.getEntry("baseLinkToBlWheelJoint").setNumber(-m_leftEncoder.getDistance() * 100);
+    m_table.getEntry("baseLinkToFrWheelJoint").setNumber(-m_rightEncoder.getDistance() * 100);
+    m_table.getEntry("baseLinkToBrWheelJoint").setNumber(-m_rightEncoder.getDistance() * 100);
   }
 
   @Override

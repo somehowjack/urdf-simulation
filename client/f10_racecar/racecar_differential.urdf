@@ -57,7 +57,7 @@
       </geometry>
     </collision>
   </link>
-  <joint name="left_rear_wheel_joint" type="fixed">
+  <joint name="leftRearWheelJoint" type="fixed">
     <origin rpy="1.5708 0 0" xyz="0 0.1 0"/>
     <parent link="diff_sideA"/>
     <child link="left_rear_wheel"/>
@@ -90,7 +90,7 @@
       </geometry>
     </collision>
   </link>
-  <joint name="right_rear_wheel_joint" type="fixed">
+  <joint name="rightRearWheelJoint" type="fixed">
     <origin rpy="1.5708 0 0" xyz="0 -0.1 0"/>
     <parent link="diff_sideB"/>
     <child link="right_rear_wheel"/>
@@ -111,7 +111,7 @@
       <material name="grey"/>
     </visual>
   </link>
-  <joint name="left_steering_hinge_joint" type="revolute">
+  <joint name="leftSteeringHingeJoint" type="revolute">
     <origin rpy="0 1.5708 0" xyz="0.325 0.1 0"/>
     <parent link="chassis"/>
     <child link="left_steering_hinge"/>
@@ -120,7 +120,7 @@
   </joint>
   <transmission name="left_steering_hinge_transmission" type="SimpleTransmission">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="left_steering_hinge_joint">
+    <joint name="leftSteeringHingeJoint">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="left_steering_hinge_motor">
@@ -143,7 +143,7 @@
       <material name="grey"/>
     </visual>
   </link>
-  <joint name="right_steering_hinge_joint" type="continuous">
+  <joint name="rightSteeringHingeJoint" type="continuous">
     <origin rpy="0 1.5708 0" xyz="0.325 -0.1 0"/>
     <parent link="chassis"/>
     <child link="right_steering_hinge"/>
@@ -152,7 +152,7 @@
   </joint>
   <transmission name="right_steering_hinge_transmission" type="SimpleTransmission">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="right_steering_hinge_joint">
+    <joint name="rightSteeringHingeJoint">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="right_steering_hinge_motor">
@@ -187,7 +187,7 @@
       </geometry>
     </collision>
   </link>
-  <joint name="left_front_wheel_joint" type="continuous">
+  <joint name="leftFrontWheelJoint" type="continuous">
     <origin rpy="1.5708 0 0" xyz="0 0 0"/>
     <parent link="left_steering_hinge"/>
     <child link="left_front_wheel"/>
@@ -196,7 +196,7 @@
   </joint>
   <transmission name="left_front_wheel_transmission" type="SimpleTransmission">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="left_front_wheel_joint">
+    <joint name="leftFrontWheelJoint">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="left_front_wheel_motor">
@@ -231,7 +231,7 @@
       </geometry>
     </collision>
   </link>
-  <joint name="right_front_wheel_joint" type="continuous">
+  <joint name="rightFrontWheelJoint" type="continuous">
     <origin rpy="1.5708 0 0" xyz="0 0 0"/>
     <parent link="right_steering_hinge"/>
     <child link="right_front_wheel"/>
@@ -240,7 +240,7 @@
   </joint>
   <transmission name="right_front_wheel_transmission" type="SimpleTransmission">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="right_front_wheel_joint">
+    <joint name="rightFrontWheelJoint">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="right_front_wheel_motor">
@@ -269,7 +269,7 @@
       </geometry>
     </visual>
   </link>
-  <joint name="hokuyo_joint" type="fixed">
+  <joint name="hokuyoJoint" type="fixed">
     <origin rpy="0 0 0" xyz="0.265 0.0 0.075"/>
     <parent link="chassis"/>
     <child link="laser"/>
@@ -296,7 +296,7 @@
       <material name="red"/>
     </visual>
   </link>
-  <joint name="zed_camera_joint" type="fixed">
+  <joint name="zedCameraJoint" type="fixed">
     <origin rpy="0 0 0" xyz="0.390 0 0.04"/>
     <parent link="chassis"/>
     <child link="zed_camera_link"/>
@@ -320,13 +320,13 @@
       <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
     </inertial>
   </link>
-  <joint name="zed_camera_left_joint" type="fixed">
+  <joint name="zedCameraLeftJoint" type="fixed">
     <origin rpy="0 0 0" xyz="0 0.06 0"/>
     <parent link="zed_camera_link"/>
     <child link="camera_link"/>
     <axis xyz="0 0 1"/>
   </joint>
-  <joint name="zed_camera_right_joint" type="fixed">
+  <joint name="zedCameraRightJoint" type="fixed">
     <origin rpy="0 0 0" xyz="0 -0.06 0"/>
     <parent link="zed_camera_link"/>
     <child link="zed_camera_right_link"/>
@@ -367,7 +367,7 @@
       </geometry>
     </collision>
   </link>
-  <joint name="diff_ring_chassis" type="continuous">
+  <joint name="diffRingChassis" type="continuous">
     <parent link="chassis"/>
     <child link="diff_ring"/>
     <origin rpy="0 0 0" xyz="0.0 0.0 0."/>
@@ -405,7 +405,7 @@
     </collision>
   </link>
   
-  <joint name="diff_spiderA_ring" type="continuous">
+  <joint name="diffSpiderARing" type="continuous">
     <parent link="diff_ring"/>
     <child link="diff_spiderA"/>
     <origin rpy="0 0 1.570795" xyz="0.0 0.0 0.0"/>
@@ -444,7 +444,7 @@
     </collision>
   </link>
   
-  <joint name="diff_spiderB_ring" type="continuous">
+  <joint name="diffSpiderBRing" type="continuous">
     <parent link="diff_ring"/>
     <child link="diff_spiderB"/>
     <origin rpy="0 0 -1.570795" xyz="0.0 0.0 0.0"/>
@@ -481,7 +481,7 @@
     </collision>
   </link>
   
-  <joint name="diff_sideA_ring" type="continuous">
+  <joint name="diffSideARing" type="continuous">
     <parent link="diff_ring"/>
     <child link="diff_sideA"/>
     <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
@@ -517,7 +517,7 @@
     </collision>
   </link>
   
-  <joint name="diff_sideB_ring" type="continuous">
+  <joint name="diffSideBRing" type="continuous">
     <parent link="diff_ring"/>
     <child link="diff_sideB"/>
     <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
@@ -558,7 +558,7 @@
       </geometry>
     </collision>
   </link>
-  <joint name="diff2_ring_chassis" type="continuous">
+  <joint name="diff2RingChassis" type="continuous">
     <parent link="chassis"/>
     <child link="diff2_ring"/>
     <origin rpy="0 0 0" xyz="0.32 0.0 0.0"/>
@@ -596,7 +596,7 @@
     </collision>
   </link>
   
-  <joint name="diff2_spiderA_ring" type="continuous">
+  <joint name="diff2SpiderARing" type="continuous">
     <parent link="diff2_ring"/>
     <child link="diff2_spiderA"/>
     <origin rpy="0 0 1.570795" xyz="0.0 0.0 0.0"/>
@@ -633,7 +633,7 @@
     </collision>
   </link>
   
-  <joint name="diff2_spiderB_ring" type="continuous">
+  <joint name="diff2SpiderBRing" type="continuous">
     <parent link="diff2_ring"/>
     <child link="diff2_spiderB"/>
     <origin rpy="0 0 -1.570795" xyz="0.0 0.0 0.0"/>
@@ -670,7 +670,7 @@
     </collision>
   </link>
   
-  <joint name="diff2_sideA_ring" type="continuous">
+  <joint name="diff2SideARing" type="continuous">
     <parent link="diff2_ring"/>
     <child link="diff2_sideA"/>
     <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
@@ -706,7 +706,7 @@
     </collision>
   </link>
   
-  <joint name="diff2_sideB_ring" type="continuous">
+  <joint name="diff2SideBRing" type="continuous">
     <parent link="diff2_ring"/>
     <child link="diff2_sideB"/>
     <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>

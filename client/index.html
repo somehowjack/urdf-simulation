@@ -59,10 +59,10 @@
                         <frc-field-robot color="blue"></frc-field-robot>
                     </frc-field-object>
                 </frc-field>
-                <frc-urdf-viewer 
+                <!-- <frc-urdf-viewer 
                     urdf="./f10_racecar/racecar_differential.urdf"
                     source-provider="NetworkTables"
-                    source-key="/atlas"
+                    source-key="/driveModel3"
                     max-distance=".28"
                     min-distance=".28"
                     robot-x="-.13" 
@@ -71,6 +71,18 @@
                     camera-x="-0.069" 
                     camera-y="0.366" 
                     camera-z="0.133"
+                    controllable
+                ></frc-urdf-viewer> -->
+
+                <frc-urdf-viewer 
+                    source-key="/drivebase"
+                    urdf="./mecanum_bot/mecanumbot.urdf"  
+                    camera-x="0.186" 
+                    camera-y="0.224" 
+                    camera-z="0.118" 
+                    max-distance=".4"
+                    min-distance=".4"
+                    controllable
                 ></frc-urdf-viewer>
             </div>
         </div>
