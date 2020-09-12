@@ -5,9 +5,16 @@ image:
 #   - port: 6080
 #     onOpen: open-preview
 
+<<<<<<< HEAD
 # ports:
 # - port: 8081
 #   onOpen: open-browser
+=======
+ports:
+- port: 8081
+  onOpen: open-browser
+  
+>>>>>>> 53c05d0356a2455b72360f27740992bc63071185
 
 tasks:
   # - init: cd ./TestProject
