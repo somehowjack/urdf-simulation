@@ -46,7 +46,7 @@ async function killSimulationPid() {
     return new Promise(async resolve => {
         try {
             const pid = await getSimulationPid();
-            const childProcess = spawn('kill', ['-9', pid]);
+            const childProcess = spawn('kill', ['-15', pid]);
             childProcess.on('exit', function (code) {
                 resolve();
             }); 
