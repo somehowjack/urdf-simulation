@@ -123,9 +123,9 @@ public class DriveSubsystem extends SubsystemBase {
           m_rightEncoder.getDistance());
 
     m_table.getEntry("baseLinkToFlWheelJoint").setNumber(-m_leftEncoder.getDistance() * 100);
-    m_table.getEntry("baseLinkToBlWheelJoint").setNumber(-m_leftEncoder.getDistance() * 100);
+    m_table.getEntry("baseLinkToBlWheelJoint").setNumber(m_leftEncoder.getDistance() * 100);
     m_table.getEntry("baseLinkToFrWheelJoint").setNumber(-m_rightEncoder.getDistance() * 100);
-    m_table.getEntry("baseLinkToBrWheelJoint").setNumber(-m_rightEncoder.getDistance() * 100);
+    m_table.getEntry("baseLinkToBrWheelJoint").setNumber(m_rightEncoder.getDistance() * 100);
   }
 
   @Override
