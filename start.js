@@ -13,6 +13,7 @@ class RobotWs {
             connection.send('welcome!');
             connection.on('message', (data) => {
                 const command = data.toString();
+                console.log("COMMAND:", command);
                 if (command === 'build') {
                     onBuild().then(result => {
                         this.sendMessage(result ? 'success' : 'error', result ? 'Build Successful' : 'Build Failed');

@@ -59,20 +59,6 @@
                         <frc-field-robot color="blue"></frc-field-robot>
                     </frc-field-object>
                 </frc-field>
-                <!-- <frc-urdf-viewer 
-                    urdf="./f10_racecar/racecar_differential.urdf"
-                    source-provider="NetworkTables"
-                    source-key="/driveModel3"
-                    max-distance=".28"
-                    min-distance=".28"
-                    robot-x="-.13" 
-                    robot-y=".1" 
-                    robot-z=".1"
-                    camera-x="-0.069" 
-                    camera-y="0.366" 
-                    camera-z="0.133"
-                    controllable
-                ></frc-urdf-viewer> -->
 
                 <frc-urdf-viewer 
                     source-key="/drivebase"
@@ -88,6 +74,14 @@
         </div>
     </frc-dashboard>
     <script src="./node_modules/@frc-web-components/frc-web-components/build/frc-web-components.min.js"></script>
+
+    <script>
+        const robotLog = document.querySelector('frc-robot-log');
+        const gitpodInfo = document.querySelector('frc-sim-gitpod-info');
+
+        gitpodInfo.addEventListener("build", () => robotLog.buildCode());
+        gitpodInfo.addEventListener("deploy", () => robotLog.deployCode());
+    </script>
 
     <script>
         const { LitElement, html, css } = window.webbit;

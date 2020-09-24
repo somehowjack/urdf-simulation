@@ -36,9 +36,8 @@ function createSocket(onMessage, onClose) {
     }
 }
 
-function sendMsg(o) {
+function sendMsg(msg) {
     if (socket) {
-        var msg = JSON.stringify(o);
         socket.send(msg);
     }
 }
