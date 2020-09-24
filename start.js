@@ -15,11 +15,11 @@ class RobotWs {
                 const command = data.toString();
                 if (command === 'build') {
                     onBuild().then(result => {
-                        this.sendMessage({ alert: result ? 'Build Successful' : 'Build Failed' });
+                        this.sendMessage(result ? 'success' : 'error', result ? 'Build Successful' : 'Build Failed');
                     });
                 } else if (command === 'deploy') {
                     onDeploy().then(result => {
-                        this.sendMessage({ alert: result ? 'Deploy Successful' : 'Deploy Failed' });
+                        this.sendMessage(result ? 'success' : 'error', result ? 'Deploy Successful' : 'Deploy Failed');
                     });
                 }
             });
@@ -31,8 +31,11 @@ class RobotWs {
         });
     }
 
-    sendMessage(message) {
-        const msg = JSON.stringify(message);
+    sendMessage(level, message) {
+        const msg = JSON.stringify({
+            level,
+            message
+        });
         this.connections.forEach(connection => {
             if (connection.readyState === connection.OPEN) {
                 connection.send(msg);
@@ -120,16 +123,17 @@ async function start() {
 
     const robotWs = new RobotWs(
         async () => {
-            return await buildRobotCode(message => robotWs.sendMessage({ log: message }));
+            return await buildRobotCode(message => robotWs.sendMessage('info', message));
         },
         async () => {
-            return await deploy(message => robotWs.sendMessage({ log: message }));
+            return await deploy(message => robotWs.sendMessage('info', message));
         }
     );
     const liveStream = new LiveStream('/workspace/urdf-simulation/build/stdout/simulateJava.log', text => {
-        robotWs.sendMessage({ log: text });
+        robotWs.sendMessage('info', text);
     });
-    deploy(message => robotWs.sendMessage({ log: message }));
+    const result = await deploy(message => robotWs.sendMessage({ log: message }));
+    robotWs.sendMessage(result ? 'success' : 'error', result ? 'Deploy Successful' : 'Deploy Failed');
 }
 
 start();

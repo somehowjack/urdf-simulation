@@ -17,9 +17,9 @@ function createSocket(onMessage, onClose) {
         };
 
         socket.onmessage = function (msg) {
-            // var data = JSON.parse(msg.data);
-            // onMessage(data);
-            onMessage(msg.data);
+            console.log('msg:', msg.data);
+            const data = JSON.parse(msg.data);
+            onMessage(data);
         };
 
         socket.onclose = function () {
@@ -62,21 +62,25 @@ class RobotLog extends LitElement {
 
     static get properties() {
         return {
-            message: { type: String }
+            info: { type: String },
+            error: { type: String },
+            success: { type: String },
         }
     }
     
     constructor() {
         super();
-        createSocket(message => {
-            // console.log('message:', message);
-            this.message = message;
+        this.info = '';
+        this.error = '';
+        this.success = '';
+        createSocket(({ level, message }) => {
+            this[level] = message;
         }, () => {});
     }
 
     render() {
         return html`
-            <frc-logger info="${this.message}"></frc-logger>
+            <frc-logger info="${this.info}" error="${this.error}" success="${this.success}"></frc-logger>
         `;
     }
 }
