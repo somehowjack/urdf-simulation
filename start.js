@@ -5,15 +5,19 @@ const { createServer } = require('wss');
 
 class RobotWs {
 
-    constructor() {
+    constructor(onBuild, onDeploy) {
         
         this.connections = [];
 
         createServer(connection => {
             connection.send('welcome!');
             connection.on('message', (data) => {
-                console.log('received message:', data.toString());
-                // connection.send("received message: " + data.toString()) // echo-server
+                const command = data.toString();
+                if (command === 'build') {
+                    onBuild();
+                } else if (command === 'deploy') {
+                    onDeploy();
+                }
             });
             this.connections.push(connection);
         })
@@ -71,20 +75,20 @@ async function killSimulationPort() {
     });
 }
 
-async function buildRobotCode() {
+async function buildRobotCode(callback) {
     return new Promise(async resolve => {
         try {
             const childProcess = spawn('./gradlew', ['build']);
             childProcess.stdout.on('data', function (data) {
-                console.log('stdout: ' + data.toString());
+                callback(data.toString());
             });
 
             childProcess.stderr.on('data', function (data) {
-                console.log('stderr: ' + data.toString());
+                callback(data.toString());
             });
 
             childProcess.on('exit', function (code) {
-                resolve();
+                resolve(code === 0);
             }); 
         } catch(e) {
             console.log('error:', e.message);
@@ -93,30 +97,35 @@ async function buildRobotCode() {
     });
 }
 
+async function deploy(callback) {
+
+    const buildSuccessful = await buildRobotCode(callback);
+
+    if (buildSuccessful) {
+        await killSimulationPid();
+        await killSimulationPort();
+        spawn('./gradlew', ['simulateJava']);
+        return true;
+    }
+
+    return false;
+}
+
 async function start() {
 
-    const robotWs = new RobotWs();
-
-    await killSimulationPid();
-    await killSimulationPort();
-
-    const childProcess = spawn('./gradlew', ['simulateJava']);
-    childProcess.stdout.on('data', function (data) {
-        console.log('stdout: ' + data.toString());
+    const robotWs = new RobotWs(
+        () => {
+            buildRobotCode(message => robotWs.sendMessage(message));
+        },
+        () => {
+            deploy(message => robotWs.sendMessage(message));
+        }
+    );
+    const liveStream = new LiveStream('/workspace/urdf-simulation/build/stdout/simulateJava.log', text => {
+        robotWs.sendMessage(text);
     });
-
-    childProcess.stderr.on('data', function (data) {
-        console.log('stderr: ' + data.toString());
-    });
-
-    const simulateLog = '/workspace/urdf-simulation/build/stdout/simulateJava.log';
-
-    childProcess.on('exit', function (code) {
-        console.log('child process exited with code ' + code.toString());
-        const liveStream = new LiveStream(simulateLog, text => {
-            robotWs.sendMessage(text);
-        });
-    });
+    deploy(message => robotWs.sendMessage(message));
 }
 
 start();
+
