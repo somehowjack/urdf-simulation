@@ -132,7 +132,7 @@ async function start() {
     const liveStream = new LiveStream('/workspace/urdf-simulation/build/stdout/simulateJava.log', text => {
         robotWs.sendMessage('info', text);
     });
-    const result = await deploy(message => robotWs.sendMessage({ log: message }));
+    const result = await deploy(message => robotWs.sendMessage('info', message));
     robotWs.sendMessage(result ? 'success' : 'error', result ? 'Deploy Successful' : 'Deploy Failed');
 }
 

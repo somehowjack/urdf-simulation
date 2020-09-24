@@ -83,6 +83,14 @@ class RobotLog extends LitElement {
             <frc-logger info="${this.info}" error="${this.error}" success="${this.success}"></frc-logger>
         `;
     }
+
+    buildCode() {
+        sendMsg('build');
+    }
+
+    deployCode() {
+        sendMsg('deploy');
+    }
 }
 
 customElements.define('frc-robot-log', RobotLog);    
