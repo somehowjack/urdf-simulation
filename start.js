@@ -35,7 +35,7 @@ class RobotWs {
 async function getSimulationPid() {
     return new Promise(async (resolve, reject) => {
         try { 
-            resolve(await fs.readFile('/workspace/differential-drive-simulation/build/pids/simulateJava.pid', 'utf8'));
+            resolve(await fs.readFile('/workspace/urdf-simulation/build/pids/simulateJava.pid', 'utf8'));
         } catch(e) {
             reject(e);
         }
@@ -71,6 +71,28 @@ async function killSimulationPort() {
     });
 }
 
+async function buildRobotCode() {
+    return new Promise(async resolve => {
+        try {
+            const childProcess = spawn('./gradlew', ['build']);
+            childProcess.stdout.on('data', function (data) {
+                console.log('stdout: ' + data.toString());
+            });
+
+            childProcess.stderr.on('data', function (data) {
+                console.log('stderr: ' + data.toString());
+            });
+
+            childProcess.on('exit', function (code) {
+                resolve();
+            }); 
+        } catch(e) {
+            console.log('error:', e.message);
+            resolve();
+        }
+    });
+}
+
 async function start() {
 
     const robotWs = new RobotWs();
@@ -87,7 +109,7 @@ async function start() {
         console.log('stderr: ' + data.toString());
     });
 
-    const simulateLog = '/workspace/differential-drive-simulation/build/stdout/simulateJava.log';
+    const simulateLog = '/workspace/urdf-simulation/build/stdout/simulateJava.log';
 
     childProcess.on('exit', function (code) {
         console.log('child process exited with code ' + code.toString());
