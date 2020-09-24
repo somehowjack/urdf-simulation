@@ -14,9 +14,13 @@ class RobotWs {
             connection.on('message', (data) => {
                 const command = data.toString();
                 if (command === 'build') {
-                    onBuild();
+                    onBuild().then(result => {
+                        this.sendMessage({ alert: result ? 'Build Successful' : 'Build Failed' });
+                    });
                 } else if (command === 'deploy') {
-                    onDeploy();
+                    onDeploy().then(result => {
+                        this.sendMessage({ alert: result ? 'Deploy Successful' : 'Deploy Failed' });
+                    });
                 }
             });
             this.connections.push(connection);
@@ -28,9 +32,10 @@ class RobotWs {
     }
 
     sendMessage(message) {
+        const msg = JSON.stringify(message);
         this.connections.forEach(connection => {
             if (connection.readyState === connection.OPEN) {
-                connection.send(message);
+                connection.send(msg);
             }
         });
     }
@@ -114,17 +119,17 @@ async function deploy(callback) {
 async function start() {
 
     const robotWs = new RobotWs(
-        () => {
-            buildRobotCode(message => robotWs.sendMessage(message));
+        async () => {
+            return await buildRobotCode(message => robotWs.sendMessage({ log: message }));
         },
-        () => {
-            deploy(message => robotWs.sendMessage(message));
+        async () => {
+            return await deploy(message => robotWs.sendMessage({ log: message }));
         }
     );
     const liveStream = new LiveStream('/workspace/urdf-simulation/build/stdout/simulateJava.log', text => {
-        robotWs.sendMessage(text);
+        robotWs.sendMessage({ log: text });
     });
-    deploy(message => robotWs.sendMessage(message));
+    deploy(message => robotWs.sendMessage({ log: message }));
 }
 
 start();
