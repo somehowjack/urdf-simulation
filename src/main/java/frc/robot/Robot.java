@@ -8,9 +8,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.simulation.RoboRioSim;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-// import edu.wpi.first.wpilibj.command
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.PWMVictorSPX;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
  * This is a sample program to demonstrate the use of state-space classes in robot simulation.
@@ -18,43 +24,59 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * the sim GUI's {@link edu.wpi.first.wpilibj.simulation.Field2d} class.
  */
 public class Robot extends TimedRobot {
-  private RoboRioSim m_roborioSim;
-  private RobotContainer m_robotContainer;
 
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
-  @Override
-  public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-  }
+    XboxController controller = new XboxController(0);
 
-  @Override
-  public void simulationPeriodic() {
-    // Here we calculate the battery voltage based on drawn current.
-    // As our robot draws more power from the battery its voltage drops.
-    // The estimated voltage is highly dependent on the battery's internal
-    // resistance.
-    var drawCurrent = m_robotContainer.getRobotDrive().getDrawnCurrentAmps();
-    var loadedVoltage = BatterySim.calculateLoadedBatteryVoltage(drawCurrent);
-    RoboRioSim.setVInVoltage(loadedVoltage);
-  }
+    PWMVictorSPX blMotor = new PWMVictorSPX(0);
+    PWMVictorSPX brMotor = new PWMVictorSPX(1);
+    PWMVictorSPX flMotor = new PWMVictorSPX(2);
+    PWMVictorSPX frMotor = new PWMVictorSPX(3);
 
-  @Override
-  public void robotPeriodic() {
-    CommandScheduler.getInstance().run();
-  }
+    SpeedControllerGroup leftMotors = new SpeedControllerGroup(blMotor, flMotor);
+    SpeedControllerGroup rightMotors = new SpeedControllerGroup(brMotor, frMotor);
 
-  @Override
-  public void autonomousInit() {
-    m_robotContainer.getAutonomousCommand().schedule();
-  }
+    DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
+    
+    NetworkTable table;
 
-  @Override
-  public void disabledInit() {
-    CommandScheduler.getInstance().cancelAll();
-  }
+    /**
+     * This function is run when the robot is first started up and should be used for any
+     * initialization code.
+     */
+    @Override
+    public void robotInit() {
+        // get the default instance of NetworkTables
+        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+
+        // get a reference to the subtable called "drivebase"
+        table = inst.getTable("drivebase");
+    }
+
+    @Override
+    public void robotPeriodic() {
+
+    }
+
+    @Override
+    public void autonomousInit() {
+
+    }
+
+    @Override
+    public void autonomousPeriodic() {
+
+    }
+
+    @Override
+    public void teleopInit() {
+
+    }
+
+    @Override
+    public void teleopPeriodic() {
+        double turn = controller.getX(GenericHID.Hand.kLeft);
+        double speed = -controller.getY(GenericHID.Hand.kLeft);
+        drive.arcadeDrive(speed, turn);
+    }
+
 }
