@@ -1,5 +1,5 @@
-var fs = require('fs'),
-    bite_size = 256;
+const fs = require('fs');
+const bite_size = 256;
 
 class LiveStream {
     
@@ -8,14 +8,39 @@ class LiveStream {
         this.onIncomingData = onIncomingData;
         this.file = null;
         this.readbytes = 0;
-        fs.open(filename, 'r', (err, fd) => { 
-            this.file = fd; 
-            this.readsome(); 
-        });
+        this.stopped = false;
+        this.initialize();
+    }
 
+    stop() {
+        this.stopped = true;
+    }
+
+    initialize() {
+
+        if (this.stopped) {
+            return;
+        }
+
+        if (fs.existsSync(this.filename)) {
+            fs.writeFileSync(this.filename, '');
+            fs.open(this.filename, 'r', (err, fd) => { 
+                this.file = fd; 
+                this.readsome(); 
+            });
+        } else {
+            setTimeout(() => {
+                this.initialize();
+            }, 100);
+        }
     }
 
     readsome() {
+
+        if (this.stopped) {
+            return;
+        }
+
         var stats = fs.fstatSync(this.file); // yes sometimes async does not make sense!
         if(stats.size<this.readbytes+1) {
             setTimeout(() => {

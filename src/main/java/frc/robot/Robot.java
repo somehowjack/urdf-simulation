@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
-
+        System.out.println("auto periodic");
     }
 
     @Override
@@ -77,6 +77,7 @@ public class Robot extends TimedRobot {
         double turn = controller.getX(GenericHID.Hand.kLeft);
         double speed = -controller.getY(GenericHID.Hand.kLeft);
         drive.arcadeDrive(speed, turn);
+        System.out.println("teleop periodic 6");
     }
 
 }

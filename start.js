@@ -13,7 +13,6 @@ class RobotWs {
             connection.send('welcome!');
             connection.on('message', (data) => {
                 const command = data.toString();
-                console.log("COMMAND:", command);
                 if (command === 'build') {
                     onBuild().then(result => {
                         this.sendMessage(result ? 'success' : 'error', result ? 'Build Successful' : 'Build Failed');
@@ -122,17 +121,28 @@ async function deploy(callback) {
 
 async function start() {
 
+    let liveStream = null;
+
     const robotWs = new RobotWs(
         async () => {
             return await buildRobotCode(message => robotWs.sendMessage('info', message));
         },
         async () => {
-            return await deploy(message => robotWs.sendMessage('info', message));
+            const success = await deploy(message => robotWs.sendMessage('info', message));
+            if (success && liveStream) {
+                liveStream.stop();
+                liveStream = new LiveStream('./build/stdout/simulateJava.log', text => {
+                    robotWs.sendMessage('info', text);
+                });
+            }
+            return success;
         }
     );
-    const liveStream = new LiveStream('/workspace/urdf-simulation/build/stdout/simulateJava.log', text => {
+    
+    liveStream = new LiveStream('./build/stdout/simulateJava.log', text => {
         robotWs.sendMessage('info', text);
     });
+
     const result = await deploy(message => robotWs.sendMessage('info', message));
     robotWs.sendMessage(result ? 'success' : 'error', result ? 'Deploy Successful' : 'Deploy Failed');
 }
