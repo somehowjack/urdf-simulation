@@ -109,8 +109,10 @@ class RobotState extends Webbit {
     }
   }
 
-  updated() {
-      this.setMenuItems();
+  updated(changedProps) {
+      if (changedProps.has('enabled') || changedProps.has('autonomous') || changedProps.has('test')) {
+        this.setMenuItems();
+      }
   }
 
   render() {

@@ -108,9 +108,19 @@ class GitpodInfo extends Webbit {
     this.dispatchEvent(new CustomEvent('build'));
   }
 
+  onToggleConsole() {
+      this.showConsole = !this.showConsole;
+  }
+
+  dialogRenderer(root, dialog) {
+      root.innerHTML = '<frc-robot-log></frc-robot-log>';
+  }
 
   render() {
     return html`
+        <vaadin-dialog modeless draggable resizable ?opened="${this.showConsole}" .renderer="${this.dialogRenderer}">
+            <p>sdfdsffds</p>
+        </vaadin-dialog>
       <frc-sim-gitpod-info-robot-state></frc-sim-gitpod-info-robot-state>
       <vaadin-button theme="contrast small" @click="${this.onDeploy}">
         <iron-icon icon="vaadin:rocket" slot="prefix"></iron-icon>

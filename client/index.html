@@ -51,31 +51,9 @@
                 <frc-sim-gitpod-info2></frc-sim-gitpod-info2>
                 <div class="dashboard">
                     <div class="sim-components">
-                        <div>
-                            <frc-sim-robot-state></frc-sim-robot-state>
-                            <frc-sim-pwms></frc-sim-pwms>
-                        </div>
                         <frc-robot-log></frc-robot-log>
-                        <frc-sim-joystick source-provider="HALSim" source-key="joystick/0"></frc-sim-joystick>
                     </div>
-                    <div class="field-components"> 
-                        <frc-field width="52.4375" height="26.9375" image="2020-field.png" grid-size="0" unit="ft">
-                            <frc-field-object source-provider="HALSim" source-key="simDevices/field2D" width="0.6096" height="0.9144" unit="m">
-                                <frc-field-robot color="blue"></frc-field-robot>
-                            </frc-field-object>
-                        </frc-field>
-
-                        <frc-urdf-viewer 
-                            source-key="/drivebase"
-                            urdf="./mecanum_bot/mecanumbot.urdf"  
-                            camera-x="0.186" 
-                            camera-y="0.224" 
-                            camera-z="0.118" 
-                            max-distance=".4"
-                            min-distance=".4"
-                            controllable
-                        ></frc-urdf-viewer>
-                    </div>
+                    
                 </div>
             </div>
         </frc-absolute-layout>
