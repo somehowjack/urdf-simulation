@@ -45,6 +45,13 @@ class GitpodInfo extends Webbit {
       .disconnected {
         color: red;
       }
+
+      [part=mode] {
+          display: flex;
+          align-items: center;
+          white-space: nowrap;
+          margin-right: 10px;
+      }
     `;
   }
 
@@ -52,6 +59,9 @@ class GitpodInfo extends Webbit {
     return {
       networktablesConnected: { type: Boolean },
       halsimConnected: { type: Boolean },
+      mode: { type: String, attribute: false },
+      showConsole: { type: Boolean, attribute: false },
+      menuItems: { type: Array, attribute: false }
     };
   }
 
@@ -68,16 +78,13 @@ class GitpodInfo extends Webbit {
   setMenuItems() {
     this.menuItems = [
         {
-            text: `Mode: ${this.mode}`,
+            text: `${this.mode}`,
             children: this.modes.map(mode => ({
                 text: mode,
                 checkable: true,
                 checked: mode === this.mode
             }))
-        },
-        {
-            text: `${this.showConsole ? 'Hide' : 'Show'} Console`,
-        },
+        }
     ];
   }
 
@@ -119,8 +126,17 @@ class GitpodInfo extends Webbit {
     this.dispatchEvent(new CustomEvent('build'));
   }
 
+  robotStateSelected(ev) {
+    this.mode = ev.detail.value.text;
+    this.setMenuItems();
+  }
+
   render() {
     return html`
+      <div part="mode">
+        <label>Robot State:</label>
+        <vaadin-menu-bar .items="${this.menuItems}" theme="tertiary" @item-selected="${this.robotStateSelected}"></vaadin-menu-bar>
+      </div>
       <vaadin-button theme="contrast small" @click="${this.onDeploy}">
         <iron-icon icon="vaadin:rocket" slot="prefix"></iron-icon>
         Deploy Robot Code
@@ -129,7 +145,10 @@ class GitpodInfo extends Webbit {
         <iron-icon icon="vaadin:building" slot="prefix"></iron-icon>
         Build Robot Code
       </vaadin-button>
-      <vaadin-menu-bar .items="${this.menuItems}"></vaadin-menu-bar>
+      <vaadin-button theme="contrast small" @click="${this.onToggleConsole}">
+        <iron-icon icon="vaadin:terminal" slot="prefix"></iron-icon>
+        ${this.showConsole ? 'Hide' : 'Show'} Console
+      </vaadin-button>
       <div part="connection">
         Robot Simulator:
         ${this.halsimConnected ? html`
