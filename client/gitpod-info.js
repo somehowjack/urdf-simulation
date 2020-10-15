@@ -52,6 +52,11 @@ class GitpodInfo extends Webbit {
           white-space: nowrap;
           margin-right: 10px;
       }
+
+      vaadin-dialog::part(overlay) {
+        background-color: hsl(3, 100%, 61%);
+        color: #fff;
+      }
     `;
   }
 
@@ -117,8 +122,27 @@ class GitpodInfo extends Webbit {
   }
 
   render() {
+      
     return html`
-        <vaadin-dialog modeless draggable resizable ?opened="${this.showConsole}" .renderer="${this.dialogRenderer}">
+        <dom-module id="error-dialog-overlay-styles" theme-for="vaadin-dialog-overlay">
+            <template>
+                <style>
+                :host([theme~="gitpod-info-dialog"]) [part="overlay"] {
+                    background: black;
+                    padding: 0;
+                    margin: 0;
+                    width: 500px;
+                }
+
+                :host([theme~="gitpod-info-dialog"]) [part="content"] {
+                    padding: 10px;
+                    padding-top: 15px;
+                }
+                </style>
+            </template>
+        </dom-module>
+
+        <vaadin-dialog modeless draggable resizable ?opened="${this.showConsole}" .renderer="${this.dialogRenderer}" theme="gitpod-info-dialog">
             <p>sdfdsffds</p>
         </vaadin-dialog>
       <frc-sim-gitpod-info-robot-state></frc-sim-gitpod-info-robot-state>
