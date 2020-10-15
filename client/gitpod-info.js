@@ -102,6 +102,13 @@ class GitpodInfo extends Webbit {
         this.addHalSimConnectionListener();
       }
     });
+
+    this.robotLog = this.shadowRoot.querySelector('frc-robot-log');
+
+    const dialog = this.shadowRoot.querySelector('vaadin-dialog');
+    dialog.renderer = (root, dialog) => {
+        root.appendChild(this.robotLog);
+    };
   }
 
   onDeploy() {
@@ -116,15 +123,6 @@ class GitpodInfo extends Webbit {
 
   onToggleConsole() {
       this.showConsole = !this.showConsole;
-  }
-
-  firstUpdated() {
-      this.robotLog = this.shadowRoot.querySelector('frc-robot-log');
-
-      const dialog = this.shadowRoot.querySelector('vaadin-dialog');
-      dialog.renderer = (root, dialog) => {
-        root.appendChild(this.robotLog);
-      };
   }
 
   render() {
