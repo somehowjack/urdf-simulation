@@ -45,41 +45,7 @@
 
 
     <frc-dashboard-builder address-type="gitpod">
-
-         <vaadin-menu-bar></vaadin-menu-bar>
-<p>Selected item: <i></i></p>
-<script>
-  customElements.whenDefined('vaadin-menu-bar').then(function() {
-    const menu = document.querySelector('vaadin-menu-bar');
-    menu.addEventListener('item-selected', function(e) {
-      const item = e.detail.value;
-      let msg = '';
-      if (item.checkable) {
-        item.checked = !item.checked;
-        msg = item.checked ? ' (on)' : ' (off)';
-      }
-      document.querySelector('i').textContent = e.detail.value.text + msg;
-    });
-    menu.items = [
-      {
-        text: 'Development',
-        children: [
-          {text: 'Debug', checkable: true},
-          {text: 'Logging', checkable: true, checked: true}
-        ]
-      },
-      {
-        text: 'Optimizations',
-        children: [
-          {text: 'Compression', checkable: true},
-          {text: 'Caching', checkable: true}
-        ]
-      },
-      {text: 'Help'}
-    ];
-  });
-</script>
-
+    
         <frc-absolute-layout>
             <div>
                 <frc-sim-gitpod-info2></frc-sim-gitpod-info2>
