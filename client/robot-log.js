@@ -79,6 +79,10 @@ class RobotLog extends LitElement {
 
     render() {
         return html`
+             <vaadin-dialog modeless draggable resizable opened>
+                <p>sdfdsffds</p>
+            </vaadin-dialog>
+
             <frc-logger info="${this.info}" error="${this.error}" success="${this.success}"></frc-logger>
         `;
     }

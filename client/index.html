@@ -40,39 +40,80 @@
   </head>
   <body>
     <script>
-      delete window.localStorage['currentWomLayout'];
+      delete window.localStorage['savedWomLayout'];
     </script>
-    <frc-dashboard address-type="gitpod">
-        <frc-sim-gitpod-info></frc-sim-gitpod-info>
-        <div class="dashboard">
-            <div class="sim-components">
-                <div>
-                    <frc-sim-robot-state></frc-sim-robot-state>
-                    <frc-sim-pwms></frc-sim-pwms>
-                </div>
-                <frc-robot-log></frc-robot-log>
-                <frc-sim-joystick source-provider="HALSim" source-key="joystick/0"></frc-sim-joystick>
-            </div>
-            <div class="field-components"> 
-                <frc-field width="52.4375" height="26.9375" image="2020-field.png" grid-size="0" unit="ft">
-                    <frc-field-object source-provider="HALSim" source-key="simDevices/field2D" width="0.6096" height="0.9144" unit="m">
-                        <frc-field-robot color="blue"></frc-field-robot>
-                    </frc-field-object>
-                </frc-field>
 
-                <frc-urdf-viewer 
-                    source-key="/drivebase"
-                    urdf="./mecanum_bot/mecanumbot.urdf"  
-                    camera-x="0.186" 
-                    camera-y="0.224" 
-                    camera-z="0.118" 
-                    max-distance=".4"
-                    min-distance=".4"
-                    controllable
-                ></frc-urdf-viewer>
+
+    <frc-dashboard-builder address-type="gitpod">
+
+         <vaadin-menu-bar></vaadin-menu-bar>
+<p>Selected item: <i></i></p>
+<script>
+  customElements.whenDefined('vaadin-menu-bar').then(function() {
+    const menu = document.querySelector('vaadin-menu-bar');
+    menu.addEventListener('item-selected', function(e) {
+      const item = e.detail.value;
+      let msg = '';
+      if (item.checkable) {
+        item.checked = !item.checked;
+        msg = item.checked ? ' (on)' : ' (off)';
+      }
+      document.querySelector('i').textContent = e.detail.value.text + msg;
+    });
+    menu.items = [
+      {
+        text: 'Development',
+        children: [
+          {text: 'Debug', checkable: true},
+          {text: 'Logging', checkable: true, checked: true}
+        ]
+      },
+      {
+        text: 'Optimizations',
+        children: [
+          {text: 'Compression', checkable: true},
+          {text: 'Caching', checkable: true}
+        ]
+      },
+      {text: 'Help'}
+    ];
+  });
+</script>
+
+        <frc-absolute-layout>
+            <div>
+                <frc-sim-gitpod-info2></frc-sim-gitpod-info2>
+                <div class="dashboard">
+                    <div class="sim-components">
+                        <div>
+                            <frc-sim-robot-state></frc-sim-robot-state>
+                            <frc-sim-pwms></frc-sim-pwms>
+                        </div>
+                        <frc-robot-log></frc-robot-log>
+                        <frc-sim-joystick source-provider="HALSim" source-key="joystick/0"></frc-sim-joystick>
+                    </div>
+                    <div class="field-components"> 
+                        <frc-field width="52.4375" height="26.9375" image="2020-field.png" grid-size="0" unit="ft">
+                            <frc-field-object source-provider="HALSim" source-key="simDevices/field2D" width="0.6096" height="0.9144" unit="m">
+                                <frc-field-robot color="blue"></frc-field-robot>
+                            </frc-field-object>
+                        </frc-field>
+
+                        <frc-urdf-viewer 
+                            source-key="/drivebase"
+                            urdf="./mecanum_bot/mecanumbot.urdf"  
+                            camera-x="0.186" 
+                            camera-y="0.224" 
+                            camera-z="0.118" 
+                            max-distance=".4"
+                            min-distance=".4"
+                            controllable
+                        ></frc-urdf-viewer>
+                    </div>
+                </div>
             </div>
-        </div>
-    </frc-dashboard>
+        </frc-absolute-layout>
+    </frc-dashboard-builder>
     <script src="./node_modules/@frc-web-components/frc-web-components/build/frc-web-components.min.js"></script>
 
     <script>
@@ -84,10 +125,11 @@
     </script>
 
     <script>
-        const { LitElement, html, css } = window.webbit;
-        const { getSourceProvider } = webbitStore;
+        var { LitElement, html, css, Webbit } = window.webbit;
+        var { getSourceProvider } = webbitStore;
     </script>
 
     <script src="./robot-log.js"></script>
+    <script src="./gitpod-info.js"></script>
   </body>
 </html>
