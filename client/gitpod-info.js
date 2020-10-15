@@ -59,9 +59,7 @@ class GitpodInfo extends Webbit {
     return {
       networktablesConnected: { type: Boolean },
       halsimConnected: { type: Boolean },
-      mode: { type: String, attribute: false },
       showConsole: { type: Boolean, attribute: false },
-      menuItems: { type: Array, attribute: false }
     };
   }
 
@@ -69,23 +67,7 @@ class GitpodInfo extends Webbit {
     super();
     this.networktablesConnected = false;
     this.halsimConnected = false;
-    this.modes = ['Disabled', 'Autonomous', 'Teleoperated', 'Test']
-    this.mode = 'Disabled';
     this.showConsole = false;
-    this.setMenuItems();
-  }
-
-  setMenuItems() {
-    this.menuItems = [
-        {
-            text: `${this.mode}`,
-            children: this.modes.map(mode => ({
-                text: mode,
-                checkable: true,
-                checked: mode === this.mode
-            }))
-        }
-    ];
   }
 
   addNtConnectionListener() {
@@ -126,17 +108,10 @@ class GitpodInfo extends Webbit {
     this.dispatchEvent(new CustomEvent('build'));
   }
 
-  robotStateSelected(ev) {
-    this.mode = ev.detail.value.text;
-    this.setMenuItems();
-  }
 
   render() {
     return html`
-      <div part="mode">
-        <label>Robot State:</label>
-        <vaadin-menu-bar .items="${this.menuItems}" theme="tertiary" @item-selected="${this.robotStateSelected}"></vaadin-menu-bar>
-      </div>
+      <frc-sim-gitpod-info-robot-state></frc-sim-gitpod-info-robot-state>
       <vaadin-button theme="contrast small" @click="${this.onDeploy}">
         <iron-icon icon="vaadin:rocket" slot="prefix"></iron-icon>
         Deploy Robot Code
