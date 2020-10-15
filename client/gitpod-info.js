@@ -53,9 +53,8 @@ class GitpodInfo extends Webbit {
           margin-right: 10px;
       }
 
-      vaadin-dialog::part(overlay) {
-        background-color: hsl(3, 100%, 61%);
-        color: #fff;
+      .hide-robot-log {
+          display: none;
       }
     `;
   }
@@ -107,23 +106,33 @@ class GitpodInfo extends Webbit {
 
   onDeploy() {
     this.dispatchEvent(new CustomEvent('deploy'));
+    this.robotLog.deployCode();
   }
 
   onBuild() {
     this.dispatchEvent(new CustomEvent('build'));
+    this.robotLog.buildCode();
   }
 
   onToggleConsole() {
       this.showConsole = !this.showConsole;
   }
 
-  dialogRenderer(root, dialog) {
-      root.innerHTML = '<frc-robot-log></frc-robot-log>';
+  firstUpdated() {
+      this.robotLog = this.shadowRoot.querySelector('frc-robot-log');
+
+      const dialog = this.shadowRoot.querySelector('vaadin-dialog');
+      dialog.renderer = (root, dialog) => {
+        root.appendChild(this.robotLog);
+      };
   }
 
   render() {
       
     return html`
+        <div class="hide-robot-log">
+            <frc-robot-log></frc-robot-log>
+        </div>
         <dom-module id="error-dialog-overlay-styles" theme-for="vaadin-dialog-overlay">
             <template>
                 <style>
@@ -142,8 +151,7 @@ class GitpodInfo extends Webbit {
             </template>
         </dom-module>
 
-        <vaadin-dialog modeless draggable resizable ?opened="${this.showConsole}" .renderer="${this.dialogRenderer}" theme="gitpod-info-dialog">
-            <p>sdfdsffds</p>
+        <vaadin-dialog modeless draggable resizable ?opened="${this.showConsole}" theme="gitpod-info-dialog">
         </vaadin-dialog>
       <frc-sim-gitpod-info-robot-state></frc-sim-gitpod-info-robot-state>
       <vaadin-button theme="contrast small" @click="${this.onDeploy}">
