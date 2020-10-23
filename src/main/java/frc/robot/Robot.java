@@ -39,6 +39,9 @@ public class Robot extends TimedRobot {
     
     NetworkTable table;
 
+    NetworkTableEntry robotSpeed;
+    NetworkTableEntry robotTurnrate;
+
     /**
      * This function is run when the robot is first started up and should be used for any
      * initialization code.
@@ -50,6 +53,134 @@ public class Robot extends TimedRobot {
 
         // get a reference to the subtable called "drivebase"
         table = inst.getTable("drivebase");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        robotSpeed = table.getEntry("speed");
+        robotTurnrate = table.getEntry("turnrate");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        robotSpeed.setDouble(1.0);
+        robotSpeed.setDouble(0.0);
     }
 
     @Override
@@ -74,8 +205,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        double turn = controller.getX(GenericHID.Hand.kLeft);
-        double speed = -controller.getY(GenericHID.Hand.kLeft);
+        // double turn = controller.getX(GenericHID.Hand.kLeft);
+        // double speed = -controller.getY(GenericHID.Hand.kLeft);
         drive.arcadeDrive(speed, turn);
         System.out.println("teleop periodic 6");
     }
