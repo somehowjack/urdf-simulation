@@ -180,7 +180,7 @@ public class Robot extends TimedRobot {
 
 
         robotSpeed.setDouble(1.0);
-        robotSpeed.setDouble(0.0);
+        robotTurnrate.setDouble(0.0);
     }
 
     @Override
@@ -205,8 +205,19 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        // double turn = controller.getX(GenericHID.Hand.kLeft);
-        // double speed = -controller.getY(GenericHID.Hand.kLeft);
+         double turn = robotTurnrate.getDouble(0);
+         double speed = robotSpeed.getDouble(0);
+         
+
+
+
+
+
+
+
+
+
+        
         drive.arcadeDrive(speed, turn);
         System.out.println("teleop periodic 6");
     }
